@@ -1,0 +1,51 @@
+#!/bin/bash
+#Title: Menu using zenity
+#Addiel Vega
+#1/30/2020
+#Description: Basic user menu using the zenity graphics package
+
+temp=$(mktemp -t temp.XXXXXX)					#temporaty  variables
+temp2=$(mktemp -t temp.XXXXXX)
+
+#func. to display space on the disk
+function diskspace {
+   df -k > $temp
+   zenity --text-info --title "Disk Space" --filename=$temp --width 750 --height 300
+}
+
+#func.to display who is logged on
+function whoson {
+   who > $temp
+   zenity --text-info --title "Logged Users" --filename=$temp --width 500 --height 300
+}
+
+#func. to display memory usesage
+function memusage {
+  cat /proc/meminfo > $temp
+  zenity --text-info --title "Memeory Usage" --filename=$temp --width 500 --height 300
+}
+
+
+while [ 2 ]						#while endless loop
+  do
+    zenity --list --radiolist --title "System Admin Menu" --column "Select" --column "Menu Item" FALSE "Display Disk Usage" FALSE "Display Users" FALSE "Display Memory Usage" FALSE "EXIT" > $temp2
+if [ $? -eq 1  ]
+  then
+   break
+fi
+
+selection=$(cat $temp2)
+case $selection in
+
+ "Display Disk Space")
+      diskspace;;
+ "Display Users")
+      whoson;;
+ "Display Memory Usage")
+      memusage;;
+ Exit)
+      break;;
+ *)
+     zenity --info "Wrong Selection"
+esac
+done

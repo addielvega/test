@@ -1,0 +1,56 @@
+#!/bin/bash
+#Title:Simple Menu
+#Addiel Vega
+#Date:1/29/2020
+#Description:Simple menu script tamplate 
+
+function menu {
+  clear 	                             	#clear screen
+  echo						#empty line
+  echo -e "\t\t\tSystem Admin Menu\n"		#double tab to center title \t\t
+  echo -e "\t1. Display disk space"		#menu
+  echo -e "\t2. Display logged on users"
+  echo -e "\t3. Display memory usage"
+  echo -e "\t0. Exit menu\n\n"			#double new line  \n\n
+  echo -en "\t\tEnter option: "
+  read -n 1 option				#
+}
+
+function diskspace {				#Func. diskspace shows the free space on  memory
+  clear
+  df -k
+}
+
+function whoson {				#Func. whoson shows who is logged on
+  clear
+  who
+}
+
+function memusage {				#Func. memusage shows the  current use of memory
+  clear
+  cat /proc/meminfo | more 
+}
+
+while [ 1 ]					#While loop with a const. true value to create an endless loop
+do
+  menu
+  case $option in				#Case function
+  0)
+     break;;					#Case 0: Exits program
+  1)
+     diskspace;;				#Case 1
+  2)
+     whoson;;					#Case 2 
+  3) 
+     memusage;;					#Case 3
+  *)
+     clear					#Cach all other inputs			
+     echo "Wrong selection";;
+  esac						#End case function
+  echo -en "\n\n\t\t\tPress aby key to continue"
+  read -n 1 line
+done						#End loop
+clear
+
+
+
